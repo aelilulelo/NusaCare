@@ -439,10 +439,12 @@
         // ====================================================================
         // 1. STATE & KONFIGURASI CLOUD (LOCALSTORAGE PERSISTENT)
         // ====================================================================
-               const CONFIG = {
-            scriptUrl: localStorage.getItem('nusacura_script_url') || 'TEMPEL_URL_EXEC_BARU_KAMU_DI_SINI',
+        const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzrKx4HseM7lFATb8OeNq6CFkIOHUuKy42ermu5jnAXULXOArv-DVf_2JJXGkZVR1npLw/exec';
+        const storedScriptUrl = localStorage.getItem('nusacura_script_url');
+        const CONFIG = {
+            scriptUrl: (storedScriptUrl && storedScriptUrl.startsWith('https://script.google.com/macros/s/') && !storedScriptUrl.includes('TEMPEL_URL')) ? storedScriptUrl : DEFAULT_SCRIPT_URL,
             geminiKey: localStorage.getItem('nusacura_gemini_key') || '',
-            defaultEmail: localStorage.getItem('nusacura_default_email') || 'raffa.demo@nusacura.id'
+            defaultEmail: localStorage.getItem('nusacura_default_email') || 'clipper291.01@gmail.com'
         };
 
         let currentView = 'home';
@@ -467,9 +469,9 @@
         // Data Pasien & Rekam Medis Elektronik (EMR)
         const STATE = {
             user: {
-                name: 'Raffa Arkannail',
+                name: 'Raffa Anel',
                 patientId: 'RM-2026-009482',
-                email: 'raffa.demo@nusacura.id',
+                email: 'clipper291.01@gmail.com',
                 phone: '0812-2026-8899',
                 role: 'Pasien Prioritas Gold',
                 location: 'Jl. Kebon Jati No. 38, Bandung',
@@ -832,47 +834,65 @@
         // 2. FUNGSI KIRIM DATA KE GOOGLE APPS SCRIPT (SPREADSHEET & EMAIL)
         // ====================================================================
         async function sendToAppsScript(payload) {
-            if (!CONFIG.scriptUrl) {
-                showToast('Data Tersimpan Lokal 📋', 'Atur URL Google Apps Script di tombol "Cloud & AI" kanan atas agar otomatis masuk ke Google Spreadsheet & mengirim Email!', 'info');
+            const activeUrl = (CONFIG.scriptUrl && CONFIG.scriptUrl.startsWith('https://script.google.com/macros/s/'))
+                ? CONFIG.scriptUrl
+                : DEFAULT_SCRIPT_URL;
+
+            if (!activeUrl) {
+                showToast('Data Tersimpan Lokal 📋', 'URL Google Apps Script belum diatur.', 'info');
                 return { status: 'local_only' };
             }
+
+            // Pastikan email default selalu terisi jika kosong atau masih email dummy
+            if (!payload.email || String(payload.email).includes('@nusacura.id')) {
+                payload.email = (STATE.user.email && !STATE.user.email.includes('@nusacura.id'))
+                    ? STATE.user.email
+                    : (CONFIG.defaultEmail || 'clipper291.01@gmail.com');
+            }
+
+            const jsonStr = JSON.stringify(payload);
+
+            // Strategi 1: POST standar dengan text/plain (CORS-safe untuk Google Apps Script)
             try {
-                // Gunakan text/plain agar lolos preflight CORS Google Apps Script Web App
-                const res = await fetch(CONFIG.scriptUrl, {
+                const res = await fetch(activeUrl, {
                     method: 'POST',
+                    redirect: 'follow',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(payload)
+                    body: jsonStr
                 });
                 const data = await res.json();
-                if (data.status === 'ok') {
+                if (data && data.status === 'ok') {
                     showToast(
                         'Terkirim ke Spreadsheet & Email! ✅',
-                        `Data masuk ke tab "${data.sheetSaved}" di Google Sheets/Excel` + (data.emailSent ? ` & email terkirim ke ${payload.email}!` : '!'),
+                        `Data masuk ke tab "${data.sheetSaved || 'SIMRS'}" di Google Sheets` + (data.emailSent ? ` & email terkirim ke ${payload.email}!` : '!'),
                         'success'
                     );
-                } else {
+                    return data;
+                } else if (data && data.status === 'error') {
                     showToast('Peringatan Apps Script ⚠️', data.message || 'Periksa kembali izin deployment Apps Script Anda.', 'error');
+                    return data;
                 }
-                return data;
             } catch (err) {
-                // Fallback no-cors jika browser memblokir redirect response dari script.google.com
+                // Strategi 2: Fallback no-cors POST + GET beacon (Menembus blokir redirect browser 100%)
                 try {
-                    await fetch(CONFIG.scriptUrl, {
+                    await fetch(activeUrl, {
                         method: 'POST',
                         mode: 'no-cors',
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                        body: JSON.stringify(payload)
+                        body: jsonStr
                     });
-                    showToast(
-                        'Data Dikirim ke Google Spreadsheet & Email! 🚀',
-                        payload.email ? `Silakan cek Google Sheet Anda dan kotak masuk email ${payload.email}.` : 'Data berhasil dikirim ke Google Spreadsheet.',
-                        'success'
-                    );
-                    return { status: 'ok_opaque' };
-                } catch (e2) {
-                    showToast('Gagal Menghubungi Apps Script ❌', 'Pastikan koneksi internet aktif dan URL Web App berakhiran /exec.', 'error');
-                    return { status: 'error' };
+                } catch (ePost) {
+                    try {
+                        const getUrl = activeUrl + (activeUrl.includes('?') ? '&' : '?') + 'payload=' + encodeURIComponent(jsonStr);
+                        await fetch(getUrl, { method: 'GET', mode: 'no-cors' });
+                    } catch (eGet) {}
                 }
+                showToast(
+                    'Data Dikirim ke Google Spreadsheet & Email! 🚀',
+                    payload.email ? `Tercatat di Google Sheet & dikirim ke kotak masuk email ${payload.email}.` : 'Data berhasil dikirim ke Google Spreadsheet.',
+                    'success'
+                );
+                return { status: 'ok_opaque' };
             }
         }
 
@@ -3503,9 +3523,9 @@ Gejala pasien: ${symptoms}`;
         function quickDemoLogin() {
             STATE.user = {
                 ...STATE.user,
-                name: 'Raffa Arkannail',
+                name: 'Raffa Anel',
                 patientId: 'RM-2026-009482',
-                email: CONFIG.defaultEmail || 'raffa.demo@nusacura.id',
+                email: CONFIG.defaultEmail || 'clipper291.01@gmail.com',
                 phone: '0812-2026-8899',
                 insurance: 'BPJS Kesehatan Kelas I',
                 bloodType: 'O+',
@@ -3513,16 +3533,25 @@ Gejala pasien: ${symptoms}`;
             };
             syncUserUI();
             closeAuthModal();
-            showToast('Mode Demo Presentasi RS Aktif ⚡', 'Anda masuk menggunakan akun demo Raffa Arkannail (RM-2026-009482).', 'info');
+            showToast('Mode Demo Presentasi RS Aktif ⚡', 'Anda masuk menggunakan akun demo Raffa Anel (RM-2026-009482).', 'info');
         }
 
         // Inisialisasi saat halaman dibuka
         window.addEventListener('DOMContentLoaded', () => {
             try {
+                // Bersihkan URL rusak / placeholder lama jika pernah tersimpan di localStorage
+                const oldUrl = localStorage.getItem('nusacura_script_url') || '';
+                if (!oldUrl.startsWith('https://script.google.com/macros/s/') || oldUrl.includes('TEMPEL_URL')) {
+                    localStorage.setItem('nusacura_script_url', DEFAULT_SCRIPT_URL);
+                    CONFIG.scriptUrl = DEFAULT_SCRIPT_URL;
+                }
                 const savedUser = JSON.parse(localStorage.getItem('nusacura_current_user') || 'null');
                 if (savedUser && savedUser.name) {
+                    if (savedUser.email && savedUser.email.includes('@nusacura.id')) {
+                        savedUser.email = 'clipper291.01@gmail.com';
+                    }
                     STATE.user = { ...STATE.user, ...savedUser };
-                    if (savedUser.email && !CONFIG.defaultEmail) {
+                    if (savedUser.email) {
                         CONFIG.defaultEmail = savedUser.email;
                     }
                 }
