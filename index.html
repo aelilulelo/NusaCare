@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>NusaCura Hospital AI — Smart Hospital, Gemini AI & Google Spreadsheet Ecosystem</title>
-    <meta name="description" content="NusaCura Hospital AI - Sistem Informasi Rumah Sakit Terpadu, Triage Klinis Gemini AI, Telemedisin, Antrean Poliklinik, Farmasi Digital, dan Integrasi Google Spreadsheet & Email Otomatis." />
+    <title>NusaCare Hospital AI — Smart Hospital, Gemini AI & Google Spreadsheet Ecosystem</title>
+    <meta name="description" content="NusaCare Hospital AI - Sistem Informasi Rumah Sakit Terpadu, Triage Klinis Gemini AI, Telemedisin, Antrean Poliklinik, Farmasi Digital, dan Integrasi Google Spreadsheet & Email Otomatis." />
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -117,7 +117,7 @@
             <div class="cursor-pointer" onclick="navigate('home')">
                 <div class="flex items-center gap-2">
                     <h1 class="text-lg md:text-xl font-extrabold tracking-tight text-slate-900">
-                        NusaCura <span class="text-emerald-700 font-bold">Hospital</span>
+                        NusaCare <span class="text-emerald-700 font-bold">Hospital</span>
                     </h1>
                     <span class="hidden lg:inline-flex items-center gap-1.5 text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200 px-2.5 py-0.5 rounded-md">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> SIMRS & Clinical AI
@@ -392,7 +392,7 @@
                         <input id="login-pass" type="password" required placeholder="Masukkan kata sandi..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-medical-500 outline-none" />
                     </div>
                     <button id="btn-submit-login" type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-extrabold text-sm shadow-lg transition flex items-center justify-center gap-2">
-                        <i class="fas fa-right-to-bracket"></i> Masuk ke Portal Pasien NusaCura AI
+                        <i class="fas fa-right-to-bracket"></i> Masuk ke Portal Pasien NusaCare AI
                     </button>
                 </form>
 
@@ -439,12 +439,11 @@
         // ====================================================================
         // 1. STATE & KONFIGURASI CLOUD (LOCALSTORAGE PERSISTENT)
         // ====================================================================
-        const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzrKx4HseM7lFATb8OeNq6CFkIOHUuKy42ermu5jnAXULXOArv-DVf_2JJXGkZVR1npLw/exec';
-        const storedScriptUrl = localStorage.getItem('nusacura_script_url');
+        const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzO3Pl6LXW1L959bJfW220qgXsDcUeHW4SQMT-WbLlAuZiwwIOfB87BiT_GbEOAhe0ySQ/exec';
         const CONFIG = {
-            scriptUrl: (storedScriptUrl && storedScriptUrl.startsWith('https://script.google.com/macros/s/') && !storedScriptUrl.includes('TEMPEL_URL')) ? storedScriptUrl : DEFAULT_SCRIPT_URL,
-            geminiKey: localStorage.getItem('nusacura_gemini_key') || '',
-            defaultEmail: localStorage.getItem('nusacura_default_email') || 'clipper291.01@gmail.com'
+            scriptUrl: DEFAULT_SCRIPT_URL,
+            geminiKey: localStorage.getItem('nusacare_gemini_key') || '',
+            defaultEmail: localStorage.getItem('nusacare_default_email') || ''
         };
 
         let currentView = 'home';
@@ -469,9 +468,9 @@
         // Data Pasien & Rekam Medis Elektronik (EMR)
         const STATE = {
             user: {
-                name: 'Raffa Anel',
+                name: 'Pasien NusaCare',
                 patientId: 'RM-2026-009482',
-                email: 'clipper291.01@gmail.com',
+                email: '',
                 phone: '0812-2026-8899',
                 role: 'Pasien Prioritas Gold',
                 location: 'Jl. Kebon Jati No. 38, Bandung',
@@ -522,7 +521,7 @@
                     currentQueue: 'A-010',
                     estimatedWait: '10 menit',
                     patientName: 'Raffa Arkannail',
-                    email: 'raffa.demo@nusacura.id',
+                    email: 'raffa.demo@nusacare.id',
                     doctorName: 'dr. Andi Pratama, Sp.PD',
                     specialty: 'Spesialis Penyakit Dalam',
                     hospitalName: 'RS Santosa Bandung',
@@ -538,7 +537,7 @@
                     id: 'notif-1',
                     type: 'E-Tiket Antrean Poliklinik',
                     sheet: 'Booking_Poli',
-                    recipient: 'raffa.demo@nusacura.id',
+                    recipient: 'raffa.demo@nusacare.id',
                     title: 'Konfirmasi Antrean A-012 — dr. Andi Pratama, Sp.PD',
                     detail: 'Kode Booking NC-2026-0841 · RS Santosa Bandung · Hari Ini 10:30 WIB',
                     time: '08:05 WIB',
@@ -548,7 +547,7 @@
                     id: 'notif-2',
                     type: 'Kartu Pasien Digital SIMRS',
                     sheet: 'Data_Pasien',
-                    recipient: 'raffa.demo@nusacura.id',
+                    recipient: 'raffa.demo@nusacare.id',
                     title: 'Aktivasi Rekam Medis RM-2026-009482 (BPJS Kelas I)',
                     detail: 'Data pasien tersinkronisasi ke Tabel Data_Pasien di Google Spreadsheet.',
                     time: 'Kemarin',
@@ -564,7 +563,7 @@
                     time: '1 jam yang lalu',
                     tag: 'Edukasi Klinis RS',
                     title: 'Panduan Mengenali Gejala Awal DBD vs Demam Biasa di Musim Pancaroba',
-                    content: 'Jika demam mendadak tinggi >39°C disertai nyeri belakang bola mata dan bintik merah, segera lakukan skrining Triage AI di NusaCura atau cek Darah Lengkap di Laboratorium RS.',
+                    content: 'Jika demam mendadak tinggi >39°C disertai nyeri belakang bola mata dan bintik merah, segera lakukan skrining Triage AI di NusaCare atau cek Darah Lengkap di Laboratorium RS.',
                     likes: 48
                 },
                 {
@@ -575,7 +574,7 @@
                     time: '3 jam yang lalu',
                     tag: 'Testimoni Pasien',
                     title: 'Cepat banget daftar Poliklinik & langsung dapat E-Tiket di Email!',
-                    content: 'Tadi pagi daftar Poli Anak dr. Siti Rahayu lewat NusaCura Hospital AI, dalam 5 detik E-Tiket antrean langsung masuk ke email saya dan tidak perlu antre lama di loket pendaftaran RS.',
+                    content: 'Tadi pagi daftar Poli Anak dr. Siti Rahayu lewat NusaCare Hospital AI, dalam 5 detik E-Tiket antrean langsung masuk ke email saya dan tidak perlu antre lama di loket pendaftaran RS.',
                     likes: 34
                 }
             ]
@@ -826,8 +825,8 @@
 
         const CHARITY_CAUSES = [
             { id: 'env01', name: 'Penghijauan Hutan Nusantara', org: 'Yayasan Hutan Lestari', image: '🌳', color: 'from-green-500 to-emerald-600', raised: 32450000, goal: 50000000, donors: 1247, desc: 'Penanaman 10.000 pohon untuk udara bersih dan pencegahan bencana.' },
-            { id: 'orp01', name: 'Layanan Medis & Gizi Anak Yatim', org: 'Rumah Yatim & NusaCura CSR', image: '👧', color: 'from-rose-500 to-pink-600', raised: 54800000, goal: 75000000, donors: 2103, desc: 'Bantuan pemeriksaan kesehatan gratis, vitamin, dan pendidikan anak yatim.' },
-            { id: 'dis01', name: 'Tim Medis Tanggap Bencana Alam', org: 'PMI & NusaCura Hospital AI', image: '🆘', color: 'from-red-500 to-orange-600', raised: 145600000, goal: 200000000, donors: 5840, desc: 'Penyediaan obat-obatan darurat dan rumah sakit lapangan bagi korban bencana.' }
+            { id: 'orp01', name: 'Layanan Medis & Gizi Anak Yatim', org: 'Rumah Yatim & NusaCare CSR', image: '👧', color: 'from-rose-500 to-pink-600', raised: 54800000, goal: 75000000, donors: 2103, desc: 'Bantuan pemeriksaan kesehatan gratis, vitamin, dan pendidikan anak yatim.' },
+            { id: 'dis01', name: 'Tim Medis Tanggap Bencana Alam', org: 'PMI & NusaCare Hospital AI', image: '🆘', color: 'from-red-500 to-orange-600', raised: 145600000, goal: 200000000, donors: 5840, desc: 'Penyediaan obat-obatan darurat dan rumah sakit lapangan bagi korban bencana.' }
         ];
 
         // ====================================================================
@@ -843,11 +842,20 @@
                 return { status: 'local_only' };
             }
 
-            // Pastikan email default selalu terisi jika kosong atau masih email dummy
-            if (!payload.email || String(payload.email).includes('@nusacura.id')) {
-                payload.email = (STATE.user.email && !STATE.user.email.includes('@nusacura.id'))
-                    ? STATE.user.email
-                    : (CONFIG.defaultEmail || 'clipper291.01@gmail.com');
+            // Jika belum ada email di payload, ambil dari akun yang sedang login atau pengaturan
+            if (!payload.email) {
+                payload.email = STATE.user.email || CONFIG.defaultEmail || '';
+            }
+            payload.email = String(payload.email || '').trim();
+            if (payload.email.includes('@nusacare.id')) {
+                payload.email = '';
+            }
+
+            // Sinkronkan email aktif ke sesi pengguna agar transaksi berikutnya otomatis terisi
+            if (payload.email && payload.email.includes('@')) {
+                STATE.user.email = payload.email;
+                CONFIG.defaultEmail = payload.email;
+                localStorage.setItem('nusacare_default_email', payload.email);
             }
 
             const jsonStr = JSON.stringify(payload);
@@ -1468,7 +1476,7 @@
             if (email) {
                 STATE.user.email = email;
                 CONFIG.defaultEmail = email;
-                localStorage.setItem('nusacura_default_email', email);
+                localStorage.setItem('nusacare_default_email', email);
             }
 
             const resultBox = document.getElementById('diag-result-box');
@@ -1482,7 +1490,7 @@
 
             let diagResult = null;
 
-            const prompt = `Kamu adalah asisten dokter klinis bernama NusaCura Hospital AI. Analisis gejala pasien berikut dan berikan respons HANYA dalam JSON valid (tanpa markdown):
+            const prompt = `Kamu adalah asisten dokter klinis bernama NusaCare Hospital AI. Analisis gejala pasien berikut dan berikan respons HANYA dalam JSON valid (tanpa markdown):
 {"name":"nama diagnosis klinis","risk":"low/medium/high","description":"penjelasan medis singkat","recommendation":"saran penanganan klinis","recommendedProductIds":["p01"]}
 Pilihan ID produk: p01 (Paracetamol), p02 (Panadol Extra), p03 (Procold Flu), p04 (Mylanta Lambung), p05 (Diapet Diare), p08 (Vicks), v01 (Vitamin C), v04 (Madu), h01p (Tolak Angin).
 Gejala pasien: ${symptoms}`;
@@ -1504,13 +1512,13 @@ Gejala pasien: ${symptoms}`;
                     const m = d.keywords.filter(k => lower.includes(k)).length;
                     if (m > maxMatch) { maxMatch = m; best = d; }
                 });
-                diagResult = best ? { ...best, source: 'NusaCura Clinical AI Engine' } : {
+                diagResult = best ? { ...best, source: 'NusaCare Clinical AI Engine' } : {
                     name: 'Observasi Gejala Klinis Umum',
                     risk: 'low',
                     description: 'Berdasarkan deskripsi gejala awal, belum ditemukan tanda kegawatdaruratan akut namun memerlukan pemantauan kondisi fisik.',
                     recommendation: 'Istirahat cukup 7-8 jam, penuhi hidrasi air putih 2 liter/hari, dan konsumsi multivitamin daya tahan tubuh. Bila keluhan menetap > 3 hari, jadwalkan konsultasi Poliklinik Penyakit Dalam.',
                     recommendedProductIds: ['v01', 'v04'],
-                    source: 'NusaCura Clinical AI Engine'
+                    source: 'NusaCare Clinical AI Engine'
                 };
             }
 
@@ -1744,7 +1752,7 @@ Gejala pasien: ${symptoms}`;
             if (!box) return;
             box.innerHTML = `<p class="text-slate-500"><i class="fas fa-circle-notch fa-spin text-medical-600 mr-1.5"></i>Google Gemini AI sedang menganalisis korelasi 6 biomarker laboratorium pasien...</p>`;
             const summary = SAMPLE_BIOMARKERS.map(b => `${b.name}: ${b.val} (Rujukan ${b.ref})`).join('; ');
-            const reply = await askGeminiAI(`Kamu adalah dokter spesialis patologi klinik di NusaCura Hospital AI. Berikan interpretasi ramah, jelas, dan saran gaya hidup singkat (3-4 kalimat Bahasa Indonesia) untuk hasil lab pasien ${STATE.user.name} berikut: ${summary}`);
+            const reply = await askGeminiAI(`Kamu adalah dokter spesialis patologi klinik di NusaCare Hospital AI. Berikan interpretasi ramah, jelas, dan saran gaya hidup singkat (3-4 kalimat Bahasa Indonesia) untuk hasil lab pasien ${STATE.user.name} berikut: ${summary}`);
             box.innerHTML = `<p class="leading-relaxed">${reply || 'Hasil laboratorium menunjukkan fungsi darah, gula darah (HbA1c 5.3%), dan ginjal (eGFR 104) yang sangat baik. Fokus perbaikan hanya pada Kolesterol LDL (126 mg/dL) melalui diet rendah lemak jenuh, konsumsi ikan/omega-3, dan kontrol ulang profil lipid 3 bulan mendatang.'}</p>`;
         }
 
@@ -1826,7 +1834,7 @@ Gejala pasien: ${symptoms}`;
             STATE.user.name = patientName;
             STATE.user.email = email;
             CONFIG.defaultEmail = email;
-            localStorage.setItem('nusacura_default_email', email);
+            localStorage.setItem('nusacare_default_email', email);
             syncUserUI();
             closeGenericModal();
 
@@ -1867,7 +1875,7 @@ Gejala pasien: ${symptoms}`;
                             </span>
                             <h2 class="text-xl md:text-2xl font-extrabold mt-1">💬 Forum Diskusi Medis & Edukasi Kesehatan RS</h2>
                             <p class="text-xs text-emerald-100 mt-1">
-                                Ruang berbagi edukasi dokter spesialis, diskusi preventif, dan pengalaman layanan pasien terverifikasi NusaCura Hospital AI.
+                                Ruang berbagi edukasi dokter spesialis, diskusi preventif, dan pengalaman layanan pasien terverifikasi NusaCare Hospital AI.
                             </p>
                         </div>
                         <button onclick="openNewPostModal()" class="bg-white text-emerald-900 hover:bg-emerald-50 px-4 py-2.5 rounded-xl text-xs font-extrabold shadow-md shrink-0">
@@ -2127,7 +2135,7 @@ Gejala pasien: ${symptoms}`;
             STATE.user.name = patientName;
             STATE.user.email = email;
             CONFIG.defaultEmail = email;
-            localStorage.setItem('nusacura_default_email', email);
+            localStorage.setItem('nusacare_default_email', email);
             syncUserUI();
 
             const newApt = {
@@ -2173,7 +2181,7 @@ Gejala pasien: ${symptoms}`;
             chatMessages = [
                 {
                     from: 'doctor',
-                    text: `Selamat datang di Telemedisin NusaCura Hospital AI. Saya ${activeChatDoc.name} (${activeChatDoc.specialty} - ${activeChatDoc.hospitalName}). Silakan sampaikan keluhan medis Anda untuk evaluasi klinis dan penerbitan E-Resep Digital.`,
+                    text: `Selamat datang di Telemedisin NusaCare Hospital AI. Saya ${activeChatDoc.name} (${activeChatDoc.specialty} - ${activeChatDoc.hospitalName}). Silakan sampaikan keluhan medis Anda untuk evaluasi klinis dan penerbitan E-Resep Digital.`,
                     time: 'Baru saja'
                 }
             ];
@@ -2264,7 +2272,7 @@ Gejala pasien: ${symptoms}`;
                 presc = { ids: ['p03', 'v01'], itemsLabel: 'R/ Procold Flu & Batuk (3x1) & Vitamin C 1000mg (1x1)' };
             }
 
-            let reply = await askGeminiAI(`Kamu adalah ${activeChatDoc.name}, seorang ${activeChatDoc.specialty} di rumah sakit mitra NusaCura AI. Jawab pesan pasien secara ramah, empatik, dan ringkas (2-3 kalimat) dalam Bahasa Indonesia: "${msg}"`);
+            let reply = await askGeminiAI(`Kamu adalah ${activeChatDoc.name}, seorang ${activeChatDoc.specialty} di rumah sakit mitra NusaCare AI. Jawab pesan pasien secara ramah, empatik, dan ringkas (2-3 kalimat) dalam Bahasa Indonesia: "${msg}"`);
             if (!reply) {
                 reply = `Terima kasih atas informasinya, ${STATE.user.name}. Berdasarkan evaluasi klinis awal sebagai ${activeChatDoc.specialty}, saya menyarankan istirahat cukup dan menerbitkan E-Resep Digital berikut yang dapat langsung Anda tebus di Instalasi Farmasi RS kami.`;
             }
@@ -2284,17 +2292,17 @@ Gejala pasien: ${symptoms}`;
             voyager: {
                 name: 'Peta Jalan Modern (Carto HD)',
                 url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-                options: { subdomains: 'abcd', maxZoom: 19, attribution: '© CARTO · NusaCura Hospital GIS' }
+                options: { subdomains: 'abcd', maxZoom: 19, attribution: '© CARTO · NusaCare Hospital GIS' }
             },
             esri_street: {
                 name: 'Peta Jalan Detail (Esri ArcGIS)',
                 url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
-                options: { maxZoom: 19, attribution: '© Esri ArcGIS · NusaCura Hospital GIS' }
+                options: { maxZoom: 19, attribution: '© Esri ArcGIS · NusaCare Hospital GIS' }
             },
             satellite: {
                 name: 'Citra Satelit RS (Esri Imagery)',
                 url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-                options: { maxZoom: 19, attribution: '© Esri Satellite · NusaCura Hospital GIS' }
+                options: { maxZoom: 19, attribution: '© Esri Satellite · NusaCare Hospital GIS' }
             }
         };
 
@@ -2721,7 +2729,7 @@ Gejala pasien: ${symptoms}`;
                 action: 'send_excel',
                 recipientName,
                 email,
-                notes: 'Laporan Eksekutif SIMRS NusaCura Hospital AI beserta seluruh tabel database operasional.'
+                notes: 'Laporan Eksekutif SIMRS NusaCare Hospital AI beserta seluruh tabel database operasional.'
             });
         }
 
@@ -2988,7 +2996,7 @@ Gejala pasien: ${symptoms}`;
             STATE.user.email = email;
             STATE.user.location = address;
             CONFIG.defaultEmail = email;
-            localStorage.setItem('nusacura_default_email', email);
+            localStorage.setItem('nusacare_default_email', email);
             syncUserUI();
 
             logAutoNotification(
@@ -3340,9 +3348,9 @@ Gejala pasien: ${symptoms}`;
             CONFIG.scriptUrl = document.getElementById('cfg-script-url').value.trim();
             CONFIG.geminiKey = document.getElementById('cfg-gemini-key').value.trim();
             CONFIG.defaultEmail = document.getElementById('cfg-default-email').value.trim();
-            localStorage.setItem('nusacura_script_url', CONFIG.scriptUrl);
-            localStorage.setItem('nusacura_gemini_key', CONFIG.geminiKey);
-            localStorage.setItem('nusacura_default_email', CONFIG.defaultEmail);
+            localStorage.setItem('nusacare_script_url', CONFIG.scriptUrl);
+            localStorage.setItem('nusacare_gemini_key', CONFIG.geminiKey);
+            localStorage.setItem('nusacare_default_email', CONFIG.defaultEmail);
             renderSidebar();
             closeConfigModal();
             showToast('Pengaturan Disimpan! ✅', 'Konfigurasi Google Apps Script & Gemini AI berhasil diperbarui.', 'success');
@@ -3413,7 +3421,7 @@ Gejala pasien: ${symptoms}`;
         }
 
         function syncUserUI() {
-            localStorage.setItem('nusacura_current_user', JSON.stringify(STATE.user));
+            localStorage.setItem('nusacare_current_user', JSON.stringify(STATE.user));
             const nameEl = document.getElementById('header-user-name');
             const rmEl = document.getElementById('header-user-rm');
             const avatarEl = document.getElementById('header-user-avatar');
@@ -3446,14 +3454,14 @@ Gejala pasien: ${symptoms}`;
                 password
             };
 
-            const usersList = JSON.parse(localStorage.getItem('nusacura_registered_users') || '[]');
+            const usersList = JSON.parse(localStorage.getItem('nusacare_registered_users') || '[]');
             const filtered = usersList.filter(u => u.email !== email);
             filtered.push(newUser);
-            localStorage.setItem('nusacura_registered_users', JSON.stringify(filtered));
+            localStorage.setItem('nusacare_registered_users', JSON.stringify(filtered));
 
             STATE.user = { ...STATE.user, ...newUser };
             CONFIG.defaultEmail = email;
-            localStorage.setItem('nusacura_default_email', email);
+            localStorage.setItem('nusacare_default_email', email);
             syncUserUI();
             closeAuthModal();
 
@@ -3483,12 +3491,12 @@ Gejala pasien: ${symptoms}`;
             const email = document.getElementById('login-email').value.trim().toLowerCase();
             const password = document.getElementById('login-pass').value;
 
-            const usersList = JSON.parse(localStorage.getItem('nusacura_registered_users') || '[]');
+            const usersList = JSON.parse(localStorage.getItem('nusacare_registered_users') || '[]');
             const localMatch = usersList.find(u => u.email === email && (!u.password || u.password === password));
             if (localMatch) {
                 STATE.user = { ...STATE.user, ...localMatch };
                 CONFIG.defaultEmail = email;
-                localStorage.setItem('nusacura_default_email', email);
+                localStorage.setItem('nusacare_default_email', email);
                 syncUserUI();
                 closeAuthModal();
                 showToast('Berhasil Masuk (Login)! 👋', `Selamat datang kembali, ${localMatch.name} (${localMatch.patientId}).`, 'success');
@@ -3506,7 +3514,7 @@ Gejala pasien: ${symptoms}`;
                     if (data.status === 'ok' && data.user) {
                         STATE.user = { ...STATE.user, ...data.user };
                         CONFIG.defaultEmail = email;
-                        localStorage.setItem('nusacura_default_email', email);
+                        localStorage.setItem('nusacare_default_email', email);
                         syncUserUI();
                         closeAuthModal();
                         showToast('Berhasil Masuk dari Database RS! ✅', data.message, 'success');
@@ -3523,9 +3531,9 @@ Gejala pasien: ${symptoms}`;
         function quickDemoLogin() {
             STATE.user = {
                 ...STATE.user,
-                name: 'Raffa Anel',
+                name: 'Pasien Demo NusaCare',
                 patientId: 'RM-2026-009482',
-                email: CONFIG.defaultEmail || 'clipper291.01@gmail.com',
+                email: CONFIG.defaultEmail || '',
                 phone: '0812-2026-8899',
                 insurance: 'BPJS Kesehatan Kelas I',
                 bloodType: 'O+',
@@ -3533,22 +3541,20 @@ Gejala pasien: ${symptoms}`;
             };
             syncUserUI();
             closeAuthModal();
-            showToast('Mode Demo Presentasi RS Aktif ⚡', 'Anda masuk menggunakan akun demo Raffa Anel (RM-2026-009482).', 'info');
+            showToast('Mode Demo Presentasi RS Aktif ⚡', 'Silakan masukkan email tujuan saat transaksi atau Daftar Pasien Baru.', 'info');
         }
 
         // Inisialisasi saat halaman dibuka
         window.addEventListener('DOMContentLoaded', () => {
             try {
-                // Bersihkan URL rusak / placeholder lama jika pernah tersimpan di localStorage
-                const oldUrl = localStorage.getItem('nusacura_script_url') || '';
-                if (!oldUrl.startsWith('https://script.google.com/macros/s/') || oldUrl.includes('TEMPEL_URL')) {
-                    localStorage.setItem('nusacura_script_url', DEFAULT_SCRIPT_URL);
-                    CONFIG.scriptUrl = DEFAULT_SCRIPT_URL;
-                }
-                const savedUser = JSON.parse(localStorage.getItem('nusacura_current_user') || 'null');
+                // Pastikan selalu memakai URL Web App terbaru yang aktif
+                localStorage.setItem('nusacare_script_url', DEFAULT_SCRIPT_URL);
+                CONFIG.scriptUrl = DEFAULT_SCRIPT_URL;
+
+                const savedUser = JSON.parse(localStorage.getItem('nusacare_current_user') || 'null');
                 if (savedUser && savedUser.name) {
-                    if (savedUser.email && savedUser.email.includes('@nusacura.id')) {
-                        savedUser.email = 'clipper291.01@gmail.com';
+                    if (savedUser.email && savedUser.email.includes('@nusacare.id')) {
+                        savedUser.email = '';
                     }
                     STATE.user = { ...STATE.user, ...savedUser };
                     if (savedUser.email) {
